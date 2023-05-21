@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
+	"server/controller/user"
+	"server/controller/websocket"
 	"server/db"
-	"server/internal/user"
 	"server/router"
 )
 
@@ -17,6 +18,9 @@ func main() {
 	userService := user.NewService(userRepo)
 	userHandler := user.NewHandler(userService)
 
-	router.InitRouter(userHandler)
+	center := websocket.NewCenter()
+	centerHandler := websocket.NewHandler(center)
+
+	router.InitRouter(userHandler, centerHandler)
 	router.Start("0.0.0.0:8000")
 }
