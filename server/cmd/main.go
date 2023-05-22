@@ -20,6 +20,7 @@ func main() {
 
 	center := websocket.NewCenter()
 	centerHandler := websocket.NewHandler(center)
+	go center.Run()
 
 	router.InitRouter(userHandler, centerHandler)
 	router.Start("0.0.0.0:8000")
