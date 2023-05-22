@@ -18,6 +18,12 @@ type service struct {
 	timeout time.Duration
 }
 
+type JWTClaims struct {
+	ID       string `json:"id"`
+	Username string `json:"username"`
+	jwt.RegisteredClaims
+}
+
 func NewService(repository Repository) Service {
 	return &service{
 		repository,
@@ -54,12 +60,6 @@ func (s *service) CreateUser(c context.Context, req *CreateUserReq) (*CreateUser
 	return res, nil
 }
 
-type MyJWTClaims struct {
-	ID       string `json:"id"`
-	Username string `json:"username"`
-	jwt.RegisteredClaims
-}
-
 func (s *service) Login(c context.Context, req *LoginUserReq) (*LoginUserRes, error) {
 	ctx, cancel := context.WithTimeout(c, s.timeout)
 	defer cancel()
@@ -74,7 +74,7 @@ func (s *service) Login(c context.Context, req *LoginUserReq) (*LoginUserRes, er
 		return &LoginUserRes{}, err
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, MyJWTClaims{
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, JWTClaims{
 		ID:       strconv.Itoa(int(u.ID)),
 		Username: u.Username,
 		RegisteredClaims: jwt.RegisteredClaims{
