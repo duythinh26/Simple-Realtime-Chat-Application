@@ -19,9 +19,9 @@ func main() {
 	userHandler := user.NewHandler(userService)
 
 	center := websocket.NewCenter()
-	centerHandler := websocket.NewHandler(center)
+	websocketHandler := websocket.NewHandler(center)
 	go center.Run()
 
-	router.InitRouter(userHandler, centerHandler)
+	router.InitRouter(userHandler, websocketHandler)
 	router.Start("0.0.0.0:8000")
 }

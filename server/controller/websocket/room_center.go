@@ -15,7 +15,10 @@ type Center struct {
 
 func NewCenter() *Center {
 	return &Center{
-		Rooms: make(map[string]*Room),
+		Rooms:      make(map[string]*Room),
+		Register:   make(chan *Client),
+		Unregister: make(chan *Client),
+		Broadcast:  make(chan *Message, 5),
 	}
 }
 

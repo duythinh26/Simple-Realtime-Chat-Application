@@ -5,7 +5,7 @@ type CreateRoomReq struct {
 	Name string `json:"name"`
 }
 
-type RoomReponse struct {
+type RoomResponse struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
 }

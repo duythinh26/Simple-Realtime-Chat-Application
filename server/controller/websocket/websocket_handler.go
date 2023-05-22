@@ -68,7 +68,10 @@ func (h *Handler) JoinRoom(c *gin.Context) {
 		Username: username,
 	}
 
+	// Register new client through the register channel
 	h.center.Register <- client
+
+	// Boardcast that message
 	h.center.Broadcast <- message
 
 	go client.writeMessage()
@@ -76,10 +79,10 @@ func (h *Handler) JoinRoom(c *gin.Context) {
 }
 
 func (h *Handler) GetRooms(c *gin.Context) {
-	rooms := make([]RoomReponse, 0)
+	rooms := make([]RoomResponse, 0)
 
 	for _, r := range h.center.Rooms {
-		rooms = append(rooms, RoomReponse{
+		rooms = append(rooms, RoomResponse{
 			ID:   r.ID,
 			Name: r.Name,
 		})
