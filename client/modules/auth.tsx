@@ -2,60 +2,59 @@ import { useState, createContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 export type UserInfo = {
-  username: string
-  id: string
+    username: string
+    id: string
 }
 
 export const AuthContext = createContext<{
-  authenticated: boolean
-  setAuthenticated: (auth: boolean) => void
-  user: UserInfo
-  setUser: (user: UserInfo) => void
+    authed: boolean
+    setAuthed: (auth: boolean) => void
+    user: UserInfo
+    setUser: (user: UserInfo) => void
 }>({
-  authenticated: false,
-  setAuthenticated: () => {},
-  user: { username: '', id: '' },
-  setUser: () => {},
+    authed: false,
+    setAuthed: () => {},
+    user: { username: '', id: '' },
+    setUser: () => {},
 })
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [authenticated, setAuthenticated] = useState(false)
-  const [user, setUser] = useState<UserInfo>({ username: '', id: '' })
+    const [authed, setAuthed] = useState(false)
+    const [user, setUser] = useState<UserInfo>({ username: '', id: '' })
 
-  const router = useRouter()
+    const router = useRouter()
 
-  useEffect(() => {
-    const userInfo = localStorage.getItem('user_info')
+    useEffect(() => {
+        const userInfo = localStorage.getItem('user_info')
 
-    if (!userInfo) {
-      if (window.location.pathname != '/signup') {
-        router.push('/login')
-        return
-      }
-    } else {
-      const user: UserInfo = JSON.parse(userInfo)
-      if (user) {
-        setUser({
-          username: user.username,
-          id: user.id,
-        })
-      }
-      setAuthenticated(true)
-    }
-  }, [authenticated])
+        if (!userInfo) {
+            if (window.location.pathname != '/signup') {
+                router.push('/login')
+                return
+            }
+        } else {
+            const user: UserInfo = JSON.parse(userInfo)
+            if (user) {
+                setUser({
+                    username: user.username,
+                    id: user.id,
+                })
+            }
+            setAuthed(true)
+        }
+    }, [authed])
 
-  return (
-    <AuthContext.Provider
-      value={{
-        authenticated: authenticated,
-        setAuthenticated: setAuthenticated,
-        user: user,
-        setUser: setUser,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  )
+    return (
+        <AuthContext.Provider
+            value={{
+                authed: authed,
+                setAuthed: setAuthed,
+                user: user,
+                setUser: setUser,
+        }}>
+            {children}
+        </AuthContext.Provider>
+    )
 }
 
 export default AuthContextProvider

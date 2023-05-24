@@ -6,16 +6,16 @@ import { AuthContext, UserInfo } from '../../modules/auth'
 const index = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { authenticated } = useContext(AuthContext)
+  const { authed } = useContext(AuthContext)
 
   const router = useRouter()
 
   useEffect(() => {
-    if (authenticated) {
+    if (authed) {
       router.push('/')
       return
     }
-  }, [authenticated])
+  }, [authed])
 
   const submitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -44,29 +44,20 @@ const index = () => {
 
   return (
     <div className='flex items-center justify-center min-w-full min-h-screen'>
-      <form className='flex flex-col md:w-1/5'>
+      <form action="" className='flex flex-col md:w-1/5'>
         <div className='text-3xl font-bold text-center'>
           <span className='text-orange'>User Login</span>
         </div>
-        <input
-          placeholder='email'
-          className='p-3 mt-8 rounded-md border-2 border-grey focus:outline-none focus:border-blue'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type='password'
-          placeholder='password'
-          className='p-3 mt-4 rounded-md border-2 border-grey focus:outline-none focus:border-blue'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button
-          className='p-3 mt-6 rounded-md bg-orange font-bold text-white'
-          type='submit'
-          onClick={submitHandler}
-        >
-          login
+        <input type="text" placeholder='email'
+        className='p-3 mt-8 rounded-md border-2 border-grey focus:outline-none focus:border-blue'
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}/>
+        <input type="password" placeholder='password'
+        className='p-3 mt-4 rounded-md border-2 border-grey focus:outline-none focus:border-blue'
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}/>
+        <button className='p-3 mt-6 rounded-md bg-orange font-bold text-white' onClick={submitHandler}>
+          Login
         </button>
       </form>
     </div>

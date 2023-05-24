@@ -1,10 +1,18 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
+import AuthContextProvider from '../modules/auth'
+import WebSocketProvider from '../modules/websocket'
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <>
-    <div className='flex flex-col md:flex-row h-full min-h-screen font-sans'>
-      <Component {...pageProps} />
-    </div>
-  </>
+  return (
+    <>
+      <AuthContextProvider>
+        <WebSocketProvider>
+          <div className='flex flex-col md:flex-row h-full min-h-screen font-sans'>
+            <Component {...pageProps} />
+          </div>
+        </WebSocketProvider>
+      </AuthContextProvider>
+    </>
+  )
 }
