@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { useRouter } from 'next/router'
 import { API_URL, WEBSOCKET_URL } from '../constants'
 import { v4 as uuidv4} from "uuid"
 import { AuthContext } from '../modules/auth'
@@ -13,9 +14,11 @@ const index = () => {
   const { user } = useContext(AuthContext)
   const { setConn } = useContext(WebsocketContext)
 
+  const router = useRouter()
+
   const getRooms = async () => {
     try {
-      const res = await fetch(`${API_URL}/ws/getRooms`, {
+      const res = await fetch(`${API_URL}/rooms`, {
         method: 'GET',
       })
 
@@ -37,7 +40,7 @@ const index = () => {
 
     try {
       setRoomName('')
-      const res = await fetch(`${API_URL}/ws/createRoom`, {
+      const res = await fetch(`${API_URL}/rooms`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -59,6 +62,8 @@ const index = () => {
     const websocket = new WebSocket(`${WEBSOCKET_URL}/rooms/${roomId}?userId=${user.id}&${user.username}`)
     if (websocket.OPEN) {
       setConn(websocket)
+      router.push('/app')
+      return
     }
   }
   
