@@ -42,7 +42,7 @@ func (c *Center) Run() {
 				if success {
 					if len(c.Rooms[cl.RoomID].Clients) != 0 {
 						c.Broadcast <- &Message{
-							Content:  "user left the chat",
+							Content:  "User left the chat",
 							RoomID:   cl.RoomID,
 							Username: cl.Username,
 						}
